@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>유럽 여행 회고</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 시작 화면 (랜딩 페이지) -->
+    <section id="landing-page" class="landing-page" aria-label="여행지 선택 화면">
+        <div class="landing-overlay" aria-hidden="true"></div>
+        <div class="landing-content">
+            <h1 class="landing-title">✈️ 유럽 여행 2024</h1>
+            <p class="landing-subtitle">어느 도시의 추억을 보시겠어요?</p>
+            <nav class="destination-buttons" aria-label="여행지 선택">
+                <button class="destination-btn london-btn" data-destination="london" aria-label="런던 여행 보기">
+                    <span class="btn-icon" aria-hidden="true">🇬🇧</span>
+                    <span class="btn-text">런던</span>
+                    <span class="btn-subtext">London</span>
+                </button>
+                <button class="destination-btn paris-btn" data-destination="paris" aria-label="파리 여행 보기">
+                    <span class="btn-icon" aria-hidden="true">🇫🇷</span>
+                    <span class="btn-text">파리</span>
+                    <span class="btn-subtext">Paris</span>
+                </button>
+            </nav>
+        </div>
+    </section>
+
+    <!-- 네비게이션 바 (처음에는 숨김) -->
+    <header class="navbar hidden">
+        <div class="nav-brand" id="nav-brand">✈️ 유럽 여행 2024</div>
+        <nav class="nav-tabs" aria-label="메인 네비게이션">
+            <button class="nav-tab active" data-destination="london" aria-label="런던 페이지로 이동">런던</button>
+            <button class="nav-tab" data-destination="paris" aria-label="파리 페이지로 이동">파리</button>
+            <button class="nav-tab home-btn" id="home-btn" aria-label="홈으로 돌아가기">🏠 홈</button>
+        </nav>
+    </header>
+
+    <!-- 런던 여행 컨텐츠 -->
+    <main id="london-content" class="destination-content" aria-label="런던 여행 내용">
+        <!-- 히어로 섹션 -->
+        <section class="hero london-hero" aria-labelledby="london-title">
+            <h2 id="london-title">런던 여행 2024</h2>
+            <p>잊을 수 없는 순간들을 담은 특별한 여행</p>
+        </section>
+
+        <!-- 명소 섹션 -->
+        <section class="section" aria-labelledby="london-places-title">
+            <h3 id="london-places-title" class="section-title">📍 방문한 명소들</h3>
+            <div class="cards-container">
+                <article class="card">
+                    <img src="img/london-bigben.jpg" alt="런던의 빅벤과 국회의사당 전경">
+                    <div class="card-title">빅벤 & 국회의사당</div>
+                    <div class="card-overlay">
+                        <div class="card-description">
+                            런던의 상징! 웨스트민스터 다리에서 바라본 빅벤이 정말 웅장했어요. 
+                            해질녘의 금빛 하늘과 어우러진 모습이 너무 아름다웠습니다.
+                        </div>
+                        <div class="card-date">2024년 8월 15일</div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="img/london-eye.jpg" alt="템즈강 옆의 런던 아이 대관람차">
+                    <div class="card-title">런던 아이</div>
+                    <div class="card-overlay">
+                        <div class="card-description">
+                            템즈강 위를 천천히 도는 관람차에서 본 런던의 파노라마 뷰가 
+                            정말 환상적이었습니다. 30분간의 특별한 경험!
+                        </div>
+                        <div class="card-date">2024년 8월 15일</div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="img/london-tower-bridge.jpg" alt="템즈강에 걸린 타워 브리지">
+                    <div class="card-title">타워 브리지</div>
+                    <div class="card-overlay">
+                        <div class="card-description">
+                            런던의 대표 명소! 다리 위를 걸으며 템즈강의 아름다운 풍경을 
+                            감상했어요. 야경은 정말 로맨틱했습니다.
+                        </div>
+                        <div class="card-date">2024년 8월 16일</div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="img/london-museum.jpg" alt="대영박물관의 웅장한 내부">
+                    <div class="card-title">대영박물관</div>
+                    <div class="card-overlay">
+                        <div class="card-description">
+                            세계 최대 규모의 박물관! 로제타석과 이집트 미라를 직접 보니 
+                            감동이었어요. 하루 종일 있어도 다 못 볼 것 같았습니다.
+                        </div>
+                        <div class="card-date">2024년 8월 17일</div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="img/london-palace.jpg" alt="버킹엄 궁전의 정면 전경">
+                    <div class="card-title">버킹엄 궁전</div>
+                    <div class="card-overlay">
+                        <div class="card-description">
+                            근위병 교대식을 보러 일찍 갔어요. 전통 의상과 정확한 동작이 
+                            인상적이었고, 궁전의 웅장함에 압도당했습니다.
+                        </div>
+                        <div class="card-date">2024년 8월 18일</div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- 맛집 섹션 -->
+        <section class="section" aria-labelledby="london-food-title">
+            <h3 id="london-food-title" class="section-title">🍽️ 맛집 탐방</h3>
+            <div class="cards-container">
+                <article class="card">
+                    <img src="img/london-fish.jpg" alt="바삭한 피쉬 앤 칩스 요리">
+                    <div class="card-title">피쉬 앤 칩스</div>
+                    <div class="card-overlay">
+                        <div class="card-description">
+                            런던에서 꼭 먹어봐야 할 음식! 바삭한 튀김옷과 부드러운 생선, 
+                            그리고 두툼한 감자튀김. 전통 맥주와 함께 먹으니 환상이었어요.
+                        </div>
+                        <div class="card-date">2024년 8월 16일</div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="img/london-tea.jpg" alt="3단 트레이에 담긴 애프터눈 티 세트">
+                    <div class="card-title">애프터눈 티</div>
+                    <div class="card-overlay">
+                        <div class="card-description">
+                            정통 영국식 애프터눈 티 체험! 3단 트레이에 담긴 샌드위치, 
+                            스콘, 케이크와 함께 우아한 시간을 보냈습니다.
+                        </div>
+                        <div class="card-date">2024년 8월 17일</div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="img/london-market.jpg" alt="보로우 마켓의 다양한 음식 가판대">
+                    <div class="card-title">보로우 마켓</div>
+                    <div class="card-overlay">
+                        <div class="card-description">
+                            런던 최고의 푸드 마켓! 세계 각국의 음식과 신선한 재료들이 
+                            가득했어요. 특히 아티잔 치즈와 빵이 일품이었습니다.
+                        </div>
+                        <div class="card-date">2024년 8월 18일</div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="img/london-pizza.jpg" alt="맛있게 구워진 이탈리안 피자">
+                    <div class="card-title">이탈리안 레스토랑</div>
+                    <div class="card-overlay">
+                        <div class="card-description">
+                            소호 지역의 숨은 맛집! 정통 이탈리아 피자와 파스타를 맛봤어요. 
+                            트러플 파스타가 정말 환상적이었습니다.
+                        </div>
+                        <div class="card-date">2024년 8월 19일</div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- 특별한 순간들 섹션 -->
+        <section class="section" aria-labelledby="london-moments-title">
+            <h3 id="london-moments-title" class="section-title">✨ 특별한 순간들</h3>
+            <div class="cards-container">
+                <article class="card">
+                    <img src="img/london-cruise.jpg" alt="템즈강을 따라 운행하는 유람선">
+                    <div class="card-title">템즈강 크루즈</div>
+                    <div class="card-overlay">
+                        <div class="card-description">
+                            템즈강을 따라 유람선을 타고 런던의 주요 명소들을 한눈에! 
+                            석양을 배경으로 한 타워 브리지가 정말 아름다웠어요.
+                        </div>
+                        <div class="card-date">2024년 8월 16일</div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="img/london-park.jpg" alt="하이드 파크의 넓은 잔디밭">
+                    <div class="card-title">하이드 파크 피크닉</div>
+                    <div class="card-overlay">
+                        <div class="card-description">
+                            넓은 잔디밭에서 여유로운 피크닉을 즐겼어요. 현지인들처럼 
+                            느긋하게 쉬는 시간이 정말 힐링이었습니다.
+                        </div>
+                        <div class="card-date">2024년 8월 17일</div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="img/london-bookstore.jpg" alt="오래된 런던 서점의 책장들">
+                    <div class="card-title">런던의 서점</div>
+                    <div class="card-overlay">
+                        <div class="card-description">
+                            100년 넘은 역사를 가진 서점! 해리포터의 배경이 된 듯한 
+                            신비로운 분위기에 빠져들었습니다.
+                        </div>
+                        <div class="card-date">2024년 8월 19일</div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="img/london-musical.jpg" alt="웨스트엔드 극장의 무대">
+                    <div class="card-title">웨스트엔드 뮤지컬</div>
+                    <div class="card-overlay">
+                        <div class="card-description">
+                            런던의 브로드웨이! 'The Phantom of the Opera' 공연을 봤어요. 
+                            웅장한 무대와 감동적인 노래가 잊을 수 없습니다.
+                        </div>
+                        <div class="card-date">2024년 8월 20일</div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="img/london-night.jpg" alt="밤에 불빛으로 빛나는 런던 시내">
+                    <div class="card-title">런던의 야경</div>
+                    <div class="card-overlay">
+                        <div class="card-description">
+                            마지막 밤, 스카이 가든에서 본 런던의 야경. 반짝이는 불빛들이 
+                            만들어낸 환상적인 풍경을 평생 잊지 못할 거예요.
+                        </div>
+                        <div class="card-date">2024년 8월 20일</div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- U7: 여행 메모 작성 폼 -->
+        <section class="section memo-section" aria-labelledby="london-memo-title">
+            <h3 id="london-memo-title" class="section-title">📝 런던 여행 메모 남기기</h3>
+            <form class="travel-memo-form" id="london-memo-form" aria-label="런던 여행 메모 작성 폼">
+                <div class="form-group">
+                    <label for="london-name">이름 <span class="required">*</span></label>
+                    <input type="text" id="london-name" name="name" required aria-required="true" placeholder="이름을 입력하세요">
+                </div>
+                <div class="form-group">
+                    <label for="london-email">이메일</label>
+                    <input type="email" id="london-email" name="email" placeholder="example@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="london-memo">메모 내용 <span class="required">*</span></label>
+                    <textarea id="london-memo" name="memo" required aria-required="true" rows="5" placeholder="런던 여행에 대한 생각이나 추억을 남겨주세요..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn">메모 저장</button>
+            </form>
+            <div id="london-memo-success" class="success-message hidden" role="alert">
+                ✅ 메모가 성공적으로 저장되었습니다!
+            </div>
+        </section>
+    </main>
+
+    <!-- 파리 여행 컨텐츠 -->
+    <main id="paris-content" class="destination-content" aria-label="파리 여행 내용">
+        <!-- 히어로 섹션 -->
+        <section class="hero paris-hero" aria-labelledby="paris-title">
+            <h2 id="paris-title">파리 여행 2024</h2>
+            <p>낭만과 예술의 도시에서의 아름다운 추억</p>
+        </section>
+
+        <!-- 명소 섹션 -->
+        <section class="section" aria-labelledby="paris-places-title">
+            <h3 id="paris-places-title" class="section-title">📍 방문한 명소들</h3>
+            <div class="cards-container">
+                <article class="card">
+                    <img src="img/paris-eiffel.jpg" alt="파리의 상징 에펠탑">
+                    <div class="card-title">에펠탑</div>
+                    <div class="card-overlay">
+                        <div class="card-description">
+                            파리의 상징! 샹드마르스 공원에서 바라본 에펠탑의 모습이 
+                            정말 압도적이었어요. 저녁의 반짝이는 조명쇼는 마법 같았습니다.
+                        </div>
+                        <div class="card-date">2024년 9월 1일</div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="img/paris-louvre.jpg" alt="루브르 박물관의 유리 피라미드">
+                    <div class="card-title">루브르 박물관</div>
+                    <div class="card-overlay">
+                        <div class="card-description">
+                            세계 최고의 미술관! 모나리자와 밀로의 비너스를 직접 보는 
+                            감동은 말로 표현할 수 없었어요. 하루로는 턱없이 부족했습니다.
+                        </div>
+                        <div class="card-date">2024년 9월 2일</div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="img/paris-notredame.jpg" alt="노트르담 대성당의 고딕 건축">
+                    <div class="card-title">노트르담 대성당</div>
+                    <div class="card-overlay">
+                        <div class="card-description">
+                            고딕 건축의 걸작! 비록 내부는 볼 수 없었지만, 
+                            외부의 웅장한 모습만으로도 충분히 감동적이었습니다.
+                        </div>
+                        <div class="card-date">2024년 9월 3일</div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="img/paris-arc.jpg" alt="샹젤리제 거리의 개선문">
+                    <div class="card-title">개선문</div>
+                    <div class="card-overlay">
+                        <div class="card-description">
+                            샹젤리제 거리의 중심! 개선문 꼭대기에서 본 파리의 
+                            방사형 도로들이 정말 인상적이었어요.
+                        </div>
+                        <div class="card-date">2024년 9월 4일</div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="img/paris-sacre.jpg" alt="몽마르트 언덕의 사크레쾨르 대성당">
+                    <div class="card-title">사크레쾨르 대성당</div>
+                    <div class="card-overlay">
+                        <div class="card-description">
+                            몽마르트 언덕 위의 하얀 성당! 계단을 올라가며 본 파리의 
+                            전경이 숨이 멎을 만큼 아름다웠습니다.
+                        </div>
+                        <div class="card-date">2024년 9월 5일</div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- 맛집 섹션 -->
+        <section class="section" aria-labelledby="paris-food-title">
+            <h3 id="paris-food-title" class="section-title">🍽️ 맛집 탐방</h3>
+            <div class="cards-container">
+                <article class="card">
+                    <img src="img/paris-croissant.jpg" alt="갓 구운 프랑스 크루아상">
+                    <div class="card-title">프랑스 베이커리</div>
+                    <div class="card-overlay">
+                        <div class="card-description">
+                            갓 구운 크루아상의 바삭함이란! 버터 향이 가득한 빵과 
+                            진한 에스프레소로 시작하는 아침이 완벽했어요.
+                        </div>
+                        <div class="card-date">2024년 9월 2일</div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="img/paris-french.jpg" alt="정통 프렌치 코스 요리">
+                    <div class="card-title">프렌치 비스트로</div>
+                    <div class="card-overlay">
+                        <div class="card-description">
+                            정통 프렌치 요리! 에스카르고와 코코뱅을 맛봤어요. 
+                            와인 페어링까지 완벽한 식사였습니다.
+                        </div>
+                        <div class="card-date">2024년 9월 3일</div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="img/paris-macaron.jpg" alt="알록달록한 프랑스 마카롱">
+                    <div class="card-title">마카롱 전문점</div>
+                    <div class="card-overlay">
+                        <div class="card-description">
+                            라뒤레의 마카롱! 다양한 색깔과 맛의 마카롱들이 
+                            예술작품 같았어요. 너무 예뻐서 먹기 아까웠습니다.
+                        </div>
+                        <div class="card-date">2024년 9월 4일</div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="img/paris-crepe.jpg" alt="달콤한 프랑스 크레페">
+                    <div class="card-title">크레페 가게</div>
+                    <div class="card-overlay">
+                        <div class="card-description">
+                            몽마르트의 크레페! 누텔라와 바나나를 넣은 달콤한 크레페를 
+                            거리를 걸으며 먹는 행복. 파리다웠어요.
+                        </div>
+                        <div class="card-date">2024년 9월 5일</div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- 특별한 순간들 섹션 -->
+        <section class="section" aria-labelledby="paris-moments-title">
+            <h3 id="paris-moments-title" class="section-title">✨ 특별한 순간들</h3>
+            <div class="cards-container">
+                <article class="card">
+                    <img src="img/paris-seine.jpg" alt="센강을 따라 흐르는 유람선">
+                    <div class="card-title">센강 유람선</div>
+                    <div class="card-overlay">
+                        <div class="card-description">
+                            센강을 따라 크루즈를 타고 파리의 명소들을 둘러봤어요. 
+                            석양 무렵의 강변 풍경이 너무나 낭만적이었습니다.
+                        </div>
+                        <div class="card-date">2024년 9월 2일</div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="img/paris-montmartre.jpg" alt="몽마르트 언덕의 예술가 거리">
+                    <div class="card-title">몽마르트 언덕</div>
+                    <div class="card-overlay">
+                        <div class="card-description">
+                            예술가들의 거리를 걸으며 초상화도 그렸어요. 
+                            자유로운 분위기와 거리 공연이 정말 인상적이었습니다.
+                        </div>
+                        <div class="card-date">2024년 9월 5일</div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="img/paris-champs.jpg" alt="샹젤리제 거리의 상점들">
+                    <div class="card-title">샹젤리제 거리</div>
+                    <div class="card-overlay">
+                        <div class="card-description">
+                            세계에서 가장 아름다운 거리를 걸었어요. 명품 상점들과 
+                            카페들이 즐비한 파리의 중심을 만끽했습니다.
+                        </div>
+                        <div class="card-date">2024년 9월 4일</div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="img/paris-versailles.jpg" alt="베르사유 궁전의 화려한 정원">
+                    <div class="card-title">베르사유 궁전</div>
+                    <div class="card-overlay">
+                        <div class="card-description">
+                            프랑스 왕실의 화려함! 거울의 방과 광활한 정원이 
+                            정말 장관이었어요. 과거로 떠난 시간여행 같았습니다.
+                        </div>
+                        <div class="card-date">2024년 9월 6일</div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="img/paris-night.jpg" alt="밤에 조명이 켜진 에펠탑">
+                    <div class="card-title">파리의 야경</div>
+                    <div class="card-overlay">
+                        <div class="card-description">
+                            트로카데로에서 본 에펠탑의 야경. 매 시간 정각에 
+                            반짝이는 조명쇼를 보며 마지막 밤을 보냈습니다.
+                        </div>
+                        <div class="card-date">2024년 9월 6일</div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- U7: 여행 메모 작성 폼 -->
+        <section class="section memo-section" aria-labelledby="paris-memo-title">
+            <h3 id="paris-memo-title" class="section-title">📝 파리 여행 메모 남기기</h3>
+            <form class="travel-memo-form" id="paris-memo-form" aria-label="파리 여행 메모 작성 폼">
+                <div class="form-group">
+                    <label for="paris-name">이름 <span class="required">*</span></label>
+                    <input type="text" id="paris-name" name="name" required aria-required="true" placeholder="이름을 입력하세요">
+                </div>
+                <div class="form-group">
+                    <label for="paris-email">이메일</label>
+                    <input type="email" id="paris-email" name="email" placeholder="example@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="paris-memo">메모 내용 <span class="required">*</span></label>
+                    <textarea id="paris-memo" name="memo" required aria-required="true" rows="5" placeholder="파리 여행에 대한 생각이나 추억을 남겨주세요..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn">메모 저장</button>
+            </form>
+            <div id="paris-memo-success" class="success-message hidden" role="alert">
+                ✅ 메모가 성공적으로 저장되었습니다!
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 유럽 여행 회고. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
