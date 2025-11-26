@@ -1,4 +1,4 @@
-// ==================== 전역 변수 ====================
+//전역 변수 
 const landingPage = document.getElementById('landing-page');
 const navbar = document.querySelector('.navbar');
 const destinationButtons = document.querySelectorAll('.destination-btn');
@@ -7,79 +7,212 @@ const homeBtn = document.getElementById('home-btn');
 const navBrand = document.getElementById('nav-brand');
 const destinationContents = document.querySelectorAll('.destination-content');
 
-// ==================== 배경 이미지 슬라이드쇼 ====================
-// 런던 이미지 배열
+//환율 API 기능 
+const EXCHANGE_API_BASE = 'https://api.exchangerate-api.com/v4/latest/KRW';
+
+//통화 정보
+const CURRENCIES = {
+    london: {
+        code: 'GBP',
+        symbol: '£',
+        name: '파운드',
+        displayName: '원/파운드'
+    },
+    paris: {
+        code: 'EUR',
+        symbol: '€',
+        name: '유로',
+        displayName: '원/유로'
+    }
+};
+
+//현재 환율 데이터 캐시
+let exchangeRatesCache = null;
+let exchangeRatesTimestamp = null;
+
+//Async/Await를 사용한 환율 정보 가져오기
+async function fetchExchangeRates() {
+    // 캐시가 있고 10분 이내면 캐시 사용 (API 호출 절약)
+    const now = Date.now();
+    if (exchangeRatesCache && exchangeRatesTimestamp && (now - exchangeRatesTimestamp < 600000)) {
+        console.log('💰 캐시된 환율 정보 사용');
+        return exchangeRatesCache;
+    }
+    
+    //try...catch로 에러 처리
+    try {
+        console.log('💰 환율 정보를 가져오는 중...');
+        
+        //fetch API로 외부 데이터 가져오기
+        const response = await fetch(EXCHANGE_API_BASE);
+        
+        //HTTP 에러 처리
+        if (!response.ok) {
+            throw new Error(`HTTP Error: ${response.status}`);
+        }
+        
+        //JSON 데이터 변환
+        const data = await response.json();
+        
+        // 캐시 저장
+        exchangeRatesCache = data;
+        exchangeRatesTimestamp = now;
+        
+        console.log('✅ 환율 정보 로드 완료:', data);
+        
+        return data;
+        
+    } catch (error) {
+        //에러 발생 시 처리
+        console.error('❌ 환율 정보 로드 실패:', error);
+        throw error;
+    }
+}
+
+//DOM 생성 -  환율 정보를 화면에 표시
+function displayExchangeRate(city, ratesData) {
+    const exchangeBanner = document.getElementById('exchange-banner');
+    const exchangeText = document.getElementById('exchange-text');
+    
+    if (!exchangeBanner || !exchangeText) return;
+    
+    const currency = CURRENCIES[city];
+    
+    //KRW를 기준으로 하므로, 반대로 계산 (1 GBP = ? KRW)
+    const rateFromKRW = ratesData.rates[currency.code];
+    const krwPerForeignCurrency = (1 / rateFromKRW).toFixed(2);
+    
+    //날짜 포맷팅
+    const date = new Date(ratesData.date);
+    const dateString = date.toLocaleDateString('ko-KR', { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+    });
+    
+    //HTML 요소 생성 및 삽입
+    exchangeText.innerHTML = `
+        <span>현재 ${currency.displayName} 환율:</span>
+        <span class="exchange-rate">1 ${currency.symbol} = ${krwPerForeignCurrency}원</span>
+        <span class="exchange-date">(${dateString} 기준)</span>
+    `;
+    
+    console.log(`💰 ${currency.displayName} 환율이 화면에 표시되었습니다.`);
+}
+
+//에러 발생 시 에러 메시지 표시
+function displayExchangeError() {
+    const exchangeText = document.getElementById('exchange-text');
+    
+    if (!exchangeText) return;
+    
+    exchangeText.innerHTML = `
+        <span class="exchange-error">⚠️ 환율 정보를 불러올 수 없습니다.</span>
+    `;
+}
+
+//환율 정보 로드 및 표시
+async function loadExchangeRate(city) {
+    const exchangeBanner = document.getElementById('exchange-banner');
+    
+    //배너 표시
+    if (exchangeBanner) {
+        exchangeBanner.classList.remove('hidden');
+    }
+    
+    try {
+        const ratesData = await fetchExchangeRates();
+        displayExchangeRate(city, ratesData);
+    } catch (error) {
+        displayExchangeError();
+    }
+}
+
+//환율 배너 숨기기
+function hideExchangeBanner() {
+    const exchangeBanner = document.getElementById('exchange-banner');
+    if (exchangeBanner) {
+        exchangeBanner.classList.add('hidden');
+    }
+}
+
+function loadAllWeather() {
+    loadWeather('london');
+    loadWeather('paris');
+}
+
+//배경 이미지 슬라이드쇼
+//런던 이미지 배열
 const londonImages = [
-    'img/london-eye.jpg',
-    'img/london-bigben.jpg',
+    'img/london-station.jpeg',
     'img/london-tower-bridge.jpg',
-    'img/london-museum.jpg',
-    'img/london-palace.jpg',
-    'img/london-cruise.jpg',
-    'img/london-night.jpg'
+    'img/london-museum1.jpeg',
+    'img/london-palace.jpeg',
+    'img/london-gallery.jpeg',
+    'img/london-park.jpeg'
 ];
 
-// 파리 이미지 배열
+//파리 이미지 배열
 const parisImages = [
-    'img/paris-eiffel.jpg',
-    'img/paris-louvre.jpg',
-    'img/paris-notredame.jpg',
-    'img/paris-sacre.jpg',
-    'img/paris-montmartre.jpg',
-    'img/paris-versailles.jpg'
+    'img/paris-louvre1.jpeg',
+    'img/paris-louvre2.jpeg',
+    'img/paris-not1.jpeg',
+    'img/paris-orse1.jpeg',
+    'img/paris-orse2.jpeg',
+    'img/paris-bers1.jpeg'
 ];
 
-// 현재 이미지 인덱스
+//현재 이미지 인덱스
 let londonCurrentIndex = 0;
 let parisCurrentIndex = 0;
 
-// 슬라이드쇼 인터벌 변수
+//슬라이드쇼 인터벌 변수
 let londonInterval = null;
 let parisInterval = null;
 
-// 런던 배경 변경 함수
+//런던 배경 변경 함수
 function changeLondonBackground() {
     const londonHero = document.querySelector('.london-hero');
     if (londonHero) {
         londonCurrentIndex = (londonCurrentIndex + 1) % londonImages.length;
         const newImage = londonImages[londonCurrentIndex];
         
-        // 부드러운 전환 효과
+        //부드러운 전환 효과
         londonHero.style.transition = 'background-image 1s ease-in-out';
         londonHero.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7)), url('${newImage}')`;
     }
 }
 
-// 파리 배경 변경 함수
+//파리 배경 변경 함수
 function changeParisBackground() {
     const parisHero = document.querySelector('.paris-hero');
     if (parisHero) {
         parisCurrentIndex = (parisCurrentIndex + 1) % parisImages.length;
         const newImage = parisImages[parisCurrentIndex];
         
-        // 부드러운 전환 효과
+        //부드러운 전환 효과
         parisHero.style.transition = 'background-image 1s ease-in-out';
         parisHero.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7)), url('${newImage}')`;
     }
 }
 
-// 슬라이드쇼 시작 함수
+//슬라이드쇼 시작 함수
 function startSlideshow(destination) {
-    // 기존 인터벌 정리
+    //기존 인터벌 정리
     stopAllSlideshows();
     
     if (destination === 'london') {
-        // U5: 런던 슬라이드쇼 시작 (5초 간격)
+        //런던 슬라이드쇼 시작 (5초 간격)
         londonInterval = setInterval(changeLondonBackground, 5000);
     } else if (destination === 'paris') {
-        // U5: 파리 슬라이드쇼 시작 (5초 간격)
+        //파리 슬라이드쇼 시작 (5초 간격)
         parisInterval = setInterval(changeParisBackground, 5000);
     }
 }
 
-// 모든 슬라이드쇼 중지 함수
+//모든 슬라이드쇼 중지 함수
 function stopAllSlideshows() {
-    // U6: clearInterval로 슬라이드쇼 중지
+    //clearInterval로 슬라이드쇼 중지
     if (londonInterval) {
         clearInterval(londonInterval);
         londonInterval = null;
@@ -90,31 +223,34 @@ function stopAllSlideshows() {
     }
 }
 
-// ==================== 랜딩 페이지에서 목적지 선택 ====================
+//목적지 선택
 destinationButtons.forEach(button => {
     button.addEventListener('click', () => {
         const destination = button.getAttribute('data-destination');
         
-        // 랜딩 페이지 숨기기 애니메이션
+        //랜딩 페이지 숨기기 애니메이션
         landingPage.classList.add('hide');
         
-        // U4: setTimeout - 애니메이션이 끝난 후 실행 (0.8초 후)
+        //setTimeout - 애니메이션이 끝난 후 실행 (0.8초 후)
         setTimeout(() => {
             landingPage.style.display = 'none';
             
-            // 네비게이션 바 표시
+            //네비게이션 바 표시
             navbar.classList.remove('hidden');
             
-            // 선택한 목적지 컨텐츠 표시
+            //선택한 목적지 컨텐츠 표시
             showDestination(destination);
             
-            // 배경 슬라이드쇼 시작
+            //배경 슬라이드쇼 시작
             startSlideshow(destination);
             
-            // 페이지 맨 위로 스크롤
+            //환율 정보 로드
+            loadExchangeRate(destination);
+            
+            //페이지 맨 위로 스크롤
             window.scrollTo({ top: 0, behavior: 'smooth' });
             
-            // U4: setTimeout - 환영 메시지를 1초 후에 표시
+            //setTimeout - 환영 메시지를 1초 후에 표시
             setTimeout(() => {
                 console.log(`🎉 ${destination === 'london' ? '런던' : '파리'} 여행 페이지에 오신 것을 환영합니다!`);
             }, 1000);
@@ -122,41 +258,44 @@ destinationButtons.forEach(button => {
     });
 });
 
-// ==================== 목적지 전환 함수 ====================
+//목적지 전환
 function showDestination(destination) {
-    // 모든 컨텐츠 숨기기
+    //모든 컨텐츠 숨기기
     destinationContents.forEach(content => {
         content.classList.remove('active');
     });
     
-    // 모든 탭에서 active 클래스 제거
+    //모든 탭에서 active 클래스 제거
     navTabs.forEach(tab => {
         tab.classList.remove('active');
     });
     
-    // 선택한 목적지 컨텐츠 표시
+    //선택한 목적지 컨텐츠 표시
     const selectedContent = document.getElementById(`${destination}-content`);
     if (selectedContent) {
         selectedContent.classList.add('active');
     }
     
-    // 선택한 탭에 active 클래스 추가
+    //선택한 탭에 active 클래스 추가
     const selectedTab = document.querySelector(`.nav-tab[data-destination="${destination}"]`);
     if (selectedTab) {
         selectedTab.classList.add('active');
     }
 }
 
-// ==================== 네비게이션 탭 클릭 이벤트 ====================
+//네비게이션 클릭 이벤트
 navTabs.forEach(tab => {
     tab.addEventListener('click', () => {
         const destination = tab.getAttribute('data-destination');
         showDestination(destination);
         
-        // 배경 슬라이드쇼 시작
+        //배경 슬라이드쇼 시작
         startSlideshow(destination);
         
-        // 페이지 맨 위로 스크롤
+        //환율 정보 업데이트
+        loadExchangeRate(destination);
+        
+        //페이지 맨 위로 스크롤
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 });
@@ -168,6 +307,9 @@ homeBtn.addEventListener('click', () => {
     
     // 네비게이션 바 숨기기
     navbar.classList.add('hidden');
+    
+    // 환율 배너 숨기기
+    hideExchangeBanner();
     
     // 모든 컨텐츠 숨기기
     destinationContents.forEach(content => {
@@ -211,6 +353,12 @@ if (londonForm) {
             alert('⚠️ 이름과 메모 내용은 필수 입력 항목입니다!');
             return;
         }
+
+        // 비밀번호 길이 검사
+        if (password.length < 4) {
+            alert('⚠️ 비밀번호는 4자리 이상 입력해주세요!');
+            return;
+        }
         
         // 이메일 유효성 검사 (선택 사항이지만 입력되었다면 검증)
         if (email && !validateEmail(email)) {
@@ -229,6 +377,8 @@ if (londonForm) {
         
         saveMemo('london', memoData);
         
+        // 메모 목록 업데이트
+        displaySavedMemos('london');
         // U4: setTimeout - 성공 메시지를 0.5초 후에 표시
         setTimeout(() => {
             londonSuccessMsg.classList.remove('hidden');
@@ -262,6 +412,11 @@ if (parisForm) {
             return;
         }
         
+        // 비밀번호 길이 검사
+        if (password.length < 4) {
+            alert('⚠️ 비밀번호는 4자리 이상 입력해주세요!');
+            return;
+        }
         // 이메일 유효성 검사
         if (email && !validateEmail(email)) {
             alert('⚠️ 올바른 이메일 형식이 아닙니다!');
@@ -279,6 +434,8 @@ if (parisForm) {
         
         saveMemo('paris', memoData);
         
+        // 메모 목록 업데이트
+        displaySavedMemos('paris');
         // U4: setTimeout - 성공 메시지를 0.5초 후에 표시
         setTimeout(() => {
             parisSuccessMsg.classList.remove('hidden');
@@ -314,6 +471,223 @@ function saveMemo(destination, memoData) {
     } catch (error) {
         console.error('메모 저장 중 오류:', error);
     }
+}
+
+// 저장된 메모 목록 표시 함수
+function displaySavedMemos(destination) {
+    const memosList = document.getElementById(`${destination}-saved-memos`);
+    
+    if (!memosList) return;
+    
+    try {
+        // localStorage에서 메모 불러오기
+        const memos = JSON.parse(localStorage.getItem(`${destination}-memos`) || '[]');
+        
+        // 메모가 없는 경우
+        if (memos.length === 0) {
+            memosList.innerHTML = '<div class="no-memos">아직 저장된 메모가 없습니다.</div>';
+            return;
+        }
+        
+        // 메모를 최신순으로 정렬
+        memos.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        
+        // 메모 목록 생성
+        memosList.innerHTML = memos.map((memo, index) => {
+            const date = new Date(memo.timestamp);
+            const formattedDate = `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+            
+            return `
+                <div class="memo-item" data-index="${index}">
+                    <div class="memo-header">
+                        <div class="memo-author">👤 ${memo.name}</div>
+                        <div class="memo-date">📅 ${formattedDate}</div>
+                    </div>
+                    ${memo.email ? `<div class="memo-email">📧 ${memo.email}</div>` : ''}
+                    <div class="memo-content">${memo.memo}</div>
+                    <button class="memo-delete-btn" onclick="deleteMemo('${destination}', ${index})">
+            🗑️ 삭제
+        </button>
+                </div>
+            `;
+        }).join('');
+        
+    } catch (error) {
+        console.error('메모 불러오기 중 오류:', error);
+        memosList.innerHTML = '<div class="no-memos">메모를 불러오는 중 오류가 발생했습니다.</div>';
+    }
+}
+
+// JSON 파일 다운로드 함수
+function downloadMemosAsJSON(destination) {
+    try {
+        // localStorage에서 메모 불러오기
+        const memos = JSON.parse(localStorage.getItem(`${destination}-memos`) || '[]');
+        
+        if (memos.length === 0) {
+            alert('⚠️ 다운로드할 메모가 없습니다!');
+            return;
+        }
+        
+        // JSON 데이터 생성
+        const jsonData = {
+            destination: destination,
+            exportDate: new Date().toISOString(),
+            totalMemos: memos.length,
+            memos: memos
+        };
+        
+        // JSON 문자열로 변환 (보기 좋게 포맷팅)
+        const jsonString = JSON.stringify(jsonData, null, 2);
+        
+        // Blob 생성
+        const blob = new Blob([jsonString], { type: 'application/json' });
+        
+        // 다운로드 링크 생성
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        
+        // 파일명 생성 (예: london-memos-2024-11-19.json)
+        const today = new Date().toISOString().split('T')[0];
+        link.download = `${destination}-memos-${today}.json`;
+        
+        // 다운로드 실행
+        document.body.appendChild(link);
+        link.click();
+        
+        // 정리
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        
+        console.log(`✅ ${destination} 메모가 JSON 파일로 다운로드되었습니다!`);
+        
+    } catch (error) {
+        console.error('JSON 다운로드 중 오류:', error);
+        alert('❌ 파일 다운로드 중 오류가 발생했습니다.');
+    }
+}
+
+
+function deleteMemo(destination, index) {
+    if (!confirm('정말로 이 메모를 삭제하시겠습니까?')) {
+        return;
+    }
+    
+    try {
+        // localStorage에서 메모 불러오기
+        const memos = JSON.parse(localStorage.getItem(`${destination}-memos`) || '[]');
+        
+        // 최신순 정렬된 인덱스를 실제 배열 인덱스로 변환
+        const sortedMemos = [...memos].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        const memoToDelete = sortedMemos[index];
+        const actualIndex = memos.findIndex(m => m.timestamp === memoToDelete.timestamp);
+        
+        // 메모 삭제
+        memos.splice(actualIndex, 1);
+        
+        // localStorage 업데이트
+        localStorage.setItem(`${destination}-memos`, JSON.stringify(memos));
+        
+        // 화면 업데이트
+        displaySavedMemos(destination);
+        
+        console.log(`✅ ${destination} 메모가 삭제되었습니다.`);
+        
+    } catch (error) {
+        console.error('메모 삭제 중 오류:', error);
+        alert('❌ 메모 삭제 중 오류가 발생했습니다.');
+    }
+}
+
+// 다운로드 버튼 이벤트 리스너 설정
+document.addEventListener('DOMContentLoaded', () => {
+    // 런던 다운로드 버튼
+    const londonDownloadBtn = document.getElementById('london-download-btn');
+    if (londonDownloadBtn) {
+        londonDownloadBtn.addEventListener('click', () => {
+            downloadMemosAsJSON('london');
+        });
+    }
+    
+    // 파리 다운로드 버튼
+    const parisDownloadBtn = document.getElementById('paris-download-btn');
+    if (parisDownloadBtn) {
+        parisDownloadBtn.addEventListener('click', () => {
+            downloadMemosAsJSON('paris');
+        });
+    }
+    
+    // 초기 메모 목록 표시
+    displaySavedMemos('london');
+    displaySavedMemos('paris');
+});
+
+
+// 카드 이미지 슬라이더 초기화
+document.addEventListener('DOMContentLoaded', () => {
+    initCardSliders();
+});
+
+// 카드 슬라이더 초기화 함수
+function initCardSliders() {
+    const cards = document.querySelectorAll('.card');
+    
+    cards.forEach(card => {
+        const images = card.querySelectorAll('.card-images img');
+        const dots = card.querySelectorAll('.card-slider-dots .dot');
+        const prevBtn = card.querySelector('.card-slider-btn.prev');
+        const nextBtn = card.querySelector('.card-slider-btn.next');
+        
+        // 이미지가 1개만 있으면 슬라이더 버튼/점 숨기기
+        if (images.length <= 1) {
+            if (prevBtn) prevBtn.style.display = 'none';
+            if (nextBtn) nextBtn.style.display = 'none';
+            if (card.querySelector('.card-slider-dots')) {
+                card.querySelector('.card-slider-dots').style.display = 'none';
+            }
+            return;
+        }
+        
+        let currentIndex = 0;
+        
+        // 이미지 전환 함수
+        function showImage(index) {
+            images.forEach(img => img.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            images[index].classList.add('active');
+            if (dots[index]) dots[index].classList.add('active');
+            
+            currentIndex = index;
+        }
+        
+        // 이전 버튼
+        if (prevBtn) {
+            prevBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const newIndex = (currentIndex - 1 + images.length) % images.length;
+                showImage(newIndex);
+            });
+        }
+        
+        // 다음 버튼
+        if (nextBtn) {
+            nextBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const newIndex = (currentIndex + 1) % images.length;
+                showImage(newIndex);
+            });
+        }
+        
+        // 인디케이터 점 클릭
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', (e) => {
+                e.stopPropagation();
+                showImage(index);
+            });
+        });
+    });
 }
 
 // ==================== 초기 설정 ====================
@@ -431,3 +805,4 @@ console.log('🌍 유럽 여행 웹사이트가 로드되었습니다!');
 console.log('💡 단축키: 1 = 런던, 2 = 파리, ESC = 홈');
 console.log('🎬 배경 슬라이드쇼: 5초마다 자동 변경');
 console.log('📝 메모 기능: 각 도시 페이지 하단에서 메모를 남겨보세요!');
+console.log('💰 환율 정보: 실시간 원/파운드, 원/유로 환율 (ExchangeRate API)');

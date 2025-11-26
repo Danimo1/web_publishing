@@ -15,14 +15,14 @@
             <p class="landing-subtitle">어느 도시의 추억을 보시겠어요?</p>
             <nav class="destination-buttons" aria-label="여행지 선택">
                 <button class="destination-btn london-btn" data-destination="london" aria-label="런던 여행 보기">
-                    <span class="btn-icon" aria-hidden="true">🇬🇧</span>
+                    <span class="btn-icon" aria-hidden="true">GB</span>
                     <span class="btn-text">런던</span>
                     <span class="btn-subtext">London</span>
                 </button>
-                <button class="destination-btn paris-btn" data-destination="paris" aria-label="파리 여행 보기">
-                    <span class="btn-icon" aria-hidden="true">🇫🇷</span>
-                    <span class="btn-text">파리</span>
-                    <span class="btn-subtext">Paris</span>
+                <button class="destination-btn paris-btn" data-destination="paris" aria-label="파리,브뤼셀 여행 보기">
+                    <span class="btn-icon" aria-hidden="true">FR,BE<span>
+                    <span class="btn-text">파리,브뤼셀</span>
+                    <span class="btn-subtext">Paris,Brussel</span>
                 </button>
             </nav>
         </div>
@@ -38,6 +38,14 @@
         </nav>
     </header>
 
+    <!-- 환율 정보 배너 (처음에는 숨김) -->
+    <aside class="exchange-rate-banner hidden" id="exchange-banner" aria-label="환율 정보">
+        <div class="exchange-content">
+            <span class="exchange-icon">💰</span>
+            <span class="exchange-text" id="exchange-text">환율 정보 로딩 중...</span>
+        </div>
+    </aside>
+
     <!-- 런던 여행 컨텐츠 -->
     <main id="london-content" class="destination-content" aria-label="런던 여행 내용">
         <!-- 히어로 섹션 -->
@@ -51,20 +59,21 @@
             <h3 id="london-places-title" class="section-title">📍 방문한 명소들</h3>
             <div class="cards-container">
                 <article class="card">
-                    <img src="img/london-bigben.jpg" alt="런던의 빅벤과 국회의사당 전경">
-                    <div class="card-title">빅벤 & 국회의사당</div>
+                    <img src="img/london-bigben.jpeg" alt="런던의 빅벤과 국회의사당 전경">
+                    <div class="card-title">빅벤</div>
                     <div class="card-overlay">
                         <div class="card-description">
-                            런던의 상징! 웨스트민스터 다리에서 바라본 빅벤이 정말 웅장했어요. 
-                            해질녘의 금빛 하늘과 어우러진 모습이 너무 아름다웠습니다.
+                           런던의 첫 일정으로는 빅벤을 방문하는 것을 처음으로 하였다. 나의 생각보다 훌씬 컸고,
+                           운이 좋게도 정오에 방문하게 되어 종소리까지 듣고 올 수 있었다. 나의 여정을 환하게 맞이 해주는 
+                           그런 느낌이었다.
                         </div>
-                        <div class="card-date">2024년 8월 15일</div>
+                        <div class="card-date">2024년 7월 11일</div>
                     </div>
                 </article>
 
                 <article class="card">
-                    <img src="img/london-eye.jpg" alt="템즈강 옆의 런던 아이 대관람차">
-                    <div class="card-title">런던 아이</div>
+                    <img src="img/london-gallery.JPEG" alt="템즈강 옆의 런던 아이 대관람차">
+                    <div class="card-title">내셔널갤러리</div>
                     <div class="card-overlay">
                         <div class="card-description">
                             템즈강 위를 천천히 도는 관람차에서 본 런던의 파노라마 뷰가 
@@ -79,34 +88,47 @@
                     <div class="card-title">타워 브리지</div>
                     <div class="card-overlay">
                         <div class="card-description">
-                            런던의 대표 명소! 다리 위를 걸으며 템즈강의 아름다운 풍경을 
-                            감상했어요. 야경은 정말 로맨틱했습니다.
+                            런던의 대표 명소인 타워 브리지, 그리고 그 위를 걸으며 템즈 강을 감상하였다. 많은 기대를 하고 템즈 강을 보았지만 강 색이 생각보다
+                            더럽고 탁해서 조금 실망하였다. 타워 브리지 건물 자체는 상당한 건축 기술을 뽐냈지만, 템즈 강의 모습은
+                            기대한것 보다 별로 였다.
                         </div>
-                        <div class="card-date">2024년 8월 16일</div>
+                        <div class="card-date">2024년 7월 13일</div>
                     </div>
                 </article>
 
                 <article class="card">
-                    <img src="img/london-museum.jpg" alt="대영박물관의 웅장한 내부">
+                    <div class="card-images">
+                        <img src="img/london-museum1.JPEG" alt="대영박물관의 웅장한 내부">
+                        <img src="img/london-museum2.JPEG" alt="대영박물관의 웅장한 내부">
+                    </div>
+                    <div class="card-slider-dots">
+                        <span class="dot active" data-index="0"></span>
+                        <span class="dot" data-index="1"></span>
+                    </div>
+                    <button class="card-slider-btn prev" aria-label="이전 사진">‹</button>
+                    <button class="card-slider-btn next" aria-label="다음 사진">›</button>
                     <div class="card-title">대영박물관</div>
                     <div class="card-overlay">
                         <div class="card-description">
-                            세계 최대 규모의 박물관! 로제타석과 이집트 미라를 직접 보니 
-                            감동이었어요. 하루 종일 있어도 다 못 볼 것 같았습니다.
+                            영국이 많은 나라에서 어마무시한 규모로 약탈해온 유품들을 전시해온 박물관인 대영박물관에 방문하게 되었다.
+                            사람도 많고, 정신이 하나도 없었지만, 다양한 나라의 유품들을 볼 수 있어 좋았고 특히 3층에 위치한 한국관을 방문했을때
+                            반가운 마음이 많이 들었다.
                         </div>
-                        <div class="card-date">2024년 8월 17일</div>
+                        <div class="card-date">2024년 7월 14일</div>
                     </div>
                 </article>
 
                 <article class="card">
-                    <img src="img/london-palace.jpg" alt="버킹엄 궁전의 정면 전경">
+                    <img src="img/london-palace.jpeg" alt="버킹엄 궁전의 정면 전경">
                     <div class="card-title">버킹엄 궁전</div>
                     <div class="card-overlay">
                         <div class="card-description">
-                            근위병 교대식을 보러 일찍 갔어요. 전통 의상과 정확한 동작이 
-                            인상적이었고, 궁전의 웅장함에 압도당했습니다.
+                            런던에서 보내는 마직막 일정은 근위병 교대식을 보기 위한 버킹엄 궁전을 방문하는 것이었다. 전통 의상과 정확한 동작이 
+                            인상적이었고, 궁전의 웅장함에 압도당하였다. 마지막날 만난 영국의 상징인 왕실을 수호하는 많은 기사단과 그들을 보며 환호하는 
+                            영국 시민들을 보며 비로소 영국이라는 나라에 대해 조금이라도 이해한 것 같았다.
+                            
                         </div>
-                        <div class="card-date">2024년 8월 18일</div>
+                        <div class="card-date">2024년 7월 15일</div>
                     </div>
                 </article>
             </div>
@@ -114,23 +136,23 @@
 
         <!-- 맛집 섹션 -->
         <section class="section" aria-labelledby="london-food-title">
-            <h3 id="london-food-title" class="section-title">🍽️ 맛집 탐방</h3>
+            <h3 id="london-food-title" class="section-title">🍽️ 런던에서 맛집 탐방</h3>
             <div class="cards-container">
                 <article class="card">
-                    <img src="img/london-fish.jpg" alt="바삭한 피쉬 앤 칩스 요리">
+                    <img src="img/london-fishandchips.JPEG" alt="바삭한 피쉬 앤 칩스 요리">
                     <div class="card-title">피쉬 앤 칩스</div>
                     <div class="card-overlay">
                         <div class="card-description">
-                            런던에서 꼭 먹어봐야 할 음식! 바삭한 튀김옷과 부드러운 생선, 
-                            그리고 두툼한 감자튀김. 전통 맥주와 함께 먹으니 환상이었어요.
+                            런던에서 꼭 먹어봐야 할 음식이기에 첫날에 바로 먹어보았다. 바삭한 튀김옷과 부드러운 생선, 
+                            그리고 두툼한 감자튀김. 익숙한 맛의 콜라와 함께 먹으니 상당히 괜찮은 맛이었다.
                         </div>
-                        <div class="card-date">2024년 8월 16일</div>
+                        <div class="card-date">2024년 7월 11일</div>
                     </div>
                 </article>
 
                 <article class="card">
-                    <img src="img/london-tea.jpg" alt="3단 트레이에 담긴 애프터눈 티 세트">
-                    <div class="card-title">애프터눈 티</div>
+                    <img src="img/london-curry.jpeg" alt="3단 트레이에 담긴 애프터눈 티 세트">
+                    <div class="card-title">인도식 커리</div>
                     <div class="card-overlay">
                         <div class="card-description">
                             정통 영국식 애프터눈 티 체험! 3단 트레이에 담긴 샌드위치, 
@@ -141,8 +163,8 @@
                 </article>
 
                 <article class="card">
-                    <img src="img/london-market.jpg" alt="보로우 마켓의 다양한 음식 가판대">
-                    <div class="card-title">보로우 마켓</div>
+                    <img src="img/london-fastfood.jpg" alt="보로우 마켓의 다양한 음식 가판대">
+                    <div class="card-title">로컬 패스트푸드</div>
                     <div class="card-overlay">
                         <div class="card-description">
                             런던 최고의 푸드 마켓! 세계 각국의 음식과 신선한 재료들이 
@@ -153,8 +175,8 @@
                 </article>
 
                 <article class="card">
-                    <img src="img/london-pizza.jpg" alt="맛있게 구워진 이탈리안 피자">
-                    <div class="card-title">이탈리안 레스토랑</div>
+                    <img src="img/london-pub.JPEG" alt="맛있게 구워진 이탈리안 피자">
+                    <div class="card-title">펍에서의 한끼</div>
                     <div class="card-overlay">
                         <div class="card-description">
                             소호 지역의 숨은 맛집! 정통 이탈리아 피자와 파스타를 맛봤어요. 
@@ -168,11 +190,11 @@
 
         <!-- 특별한 순간들 섹션 -->
         <section class="section" aria-labelledby="london-moments-title">
-            <h3 id="london-moments-title" class="section-title">✨ 특별한 순간들</h3>
+            <h3 id="london-moments-title" class="section-title">✨ 런던에서의 잊지 못할 순간들</h3>
             <div class="cards-container">
                 <article class="card">
-                    <img src="img/london-cruise.jpg" alt="템즈강을 따라 운행하는 유람선">
-                    <div class="card-title">템즈강 크루즈</div>
+                    <img src="img/london-wem1.jpg" alt="템즈강을 따라 운행하는 유람선">
+                    <div class="card-title">웸블리</div>
                     <div class="card-overlay">
                         <div class="card-description">
                             템즈강을 따라 유람선을 타고 런던의 주요 명소들을 한눈에! 
@@ -183,8 +205,8 @@
                 </article>
 
                 <article class="card">
-                    <img src="img/london-park.jpg" alt="하이드 파크의 넓은 잔디밭">
-                    <div class="card-title">하이드 파크 피크닉</div>
+                    <img src="img/london-park.jpeg" alt="하이드 파크의 넓은 잔디밭">
+                    <div class="card-title">그리니치</div>
                     <div class="card-overlay">
                         <div class="card-description">
                             넓은 잔디밭에서 여유로운 피크닉을 즐겼어요. 현지인들처럼 
@@ -195,8 +217,8 @@
                 </article>
 
                 <article class="card">
-                    <img src="img/london-bookstore.jpg" alt="오래된 런던 서점의 책장들">
-                    <div class="card-title">런던의 서점</div>
+                    <img src="img/london-bookstore.jpeg" alt="오래된 런던 서점의 책장들">
+                    <div class="card-title">노팅힐서점</div>
                     <div class="card-overlay">
                         <div class="card-description">
                             100년 넘은 역사를 가진 서점! 해리포터의 배경이 된 듯한 
@@ -207,8 +229,8 @@
                 </article>
 
                 <article class="card">
-                    <img src="img/london-musical.jpg" alt="웨스트엔드 극장의 무대">
-                    <div class="card-title">웨스트엔드 뮤지컬</div>
+                    <img src="img/london-win.JPEG" alt="웨스트엔드 극장의 무대">
+                    <div class="card-title">윈저성</div>
                     <div class="card-overlay">
                         <div class="card-description">
                             런던의 브로드웨이! 'The Phantom of the Opera' 공연을 봤어요. 
@@ -219,8 +241,8 @@
                 </article>
 
                 <article class="card">
-                    <img src="img/london-night.jpg" alt="밤에 불빛으로 빛나는 런던 시내">
-                    <div class="card-title">런던의 야경</div>
+                    <img src="img/london-station.JPEG" alt="밤에 불빛으로 빛나는 런던 시내">
+                    <div class="card-title">킹스크로스역</div>
                     <div class="card-overlay">
                         <div class="card-description">
                             마지막 밤, 스카이 가든에서 본 런던의 야경. 반짝이는 불빛들이 
@@ -234,7 +256,7 @@
 
         <!-- U7: 여행 메모 작성 폼 -->
         <section class="section memo-section" aria-labelledby="london-memo-title">
-            <h3 id="london-memo-title" class="section-title">📝 런던 여행 메모 남기기</h3>
+            <h3 id="london-memo-title" class="section-title">📝 런던 여행 감상 남기기</h3>
             <form class="travel-memo-form" id="london-memo-form" aria-label="런던 여행 메모 작성 폼">
                 <div class="form-group">
                     <label for="london-name">이름 <span class="required">*</span></label>
@@ -245,6 +267,11 @@
                     <input type="email" id="london-email" name="email" placeholder="example@email.com">
                 </div>
                 <div class="form-group">
+                    <label for="london-password">비밀번호 <span class="required">*</span></label>
+                    <input type="password" id="london-password" name="password" required aria-required="true" placeholder="메모 삭제 시 필요합니다 (4자리 이상)" minlength="4">
+                    <small class="form-hint">💡 메모를 삭제할 때 필요하니 기억해주세요!</small>
+                </div>
+                <div class="form-group">
                     <label for="london-memo">메모 내용 <span class="required">*</span></label>
                     <textarea id="london-memo" name="memo" required aria-required="true" rows="5" placeholder="런던 여행에 대한 생각이나 추억을 남겨주세요..."></textarea>
                 </div>
@@ -252,6 +279,19 @@
             </form>
             <div id="london-memo-success" class="success-message hidden" role="alert">
                 ✅ 메모가 성공적으로 저장되었습니다!
+            </div>
+            
+            <!-- 저장된 메모 목록 -->
+            <div class="saved-memos-container">
+                <div class="saved-memos-header">
+                    <h4 class="saved-memos-title">💾 저장된 메모</h4>
+                    <button class="download-btn" id="london-download-btn" title="JSON 파일로 다운로드">
+                        <span class="download-icon">⬇️</span> 다운로드
+                    </button>
+                </div>
+                <div id="london-saved-memos" class="saved-memos-list">
+                    <!-- JavaScript로 동적 생성 -->
+                </div>
             </div>
         </section>
     </main>
@@ -266,10 +306,10 @@
 
         <!-- 명소 섹션 -->
         <section class="section" aria-labelledby="paris-places-title">
-            <h3 id="paris-places-title" class="section-title">📍 방문한 명소들</h3>
+            <h3 id="paris-places-title" class="section-title">📍 파리에서 방문한 명소들</h3>
             <div class="cards-container">
                 <article class="card">
-                    <img src="img/paris-eiffel.jpg" alt="파리의 상징 에펠탑">
+                    <img src="img/paris-effel.JPEG" alt="파리의 상징 에펠탑">
                     <div class="card-title">에펠탑</div>
                     <div class="card-overlay">
                         <div class="card-description">
@@ -281,7 +321,7 @@
                 </article>
 
                 <article class="card">
-                    <img src="img/paris-louvre.jpg" alt="루브르 박물관의 유리 피라미드">
+                    <img src="img/paris-louvre1.JPEG" alt="루브르 박물관의 유리 피라미드">
                     <div class="card-title">루브르 박물관</div>
                     <div class="card-overlay">
                         <div class="card-description">
@@ -293,7 +333,7 @@
                 </article>
 
                 <article class="card">
-                    <img src="img/paris-notredame.jpg" alt="노트르담 대성당의 고딕 건축">
+                    <img src="img/paris-not1.JPEG" alt="노트르담 대성당의 고딕 건축">
                     <div class="card-title">노트르담 대성당</div>
                     <div class="card-overlay">
                         <div class="card-description">
@@ -305,8 +345,8 @@
                 </article>
 
                 <article class="card">
-                    <img src="img/paris-arc.jpg" alt="샹젤리제 거리의 개선문">
-                    <div class="card-title">개선문</div>
+                    <img src="img/paris-orse1.JPEG" alt="샹젤리제 거리의 개선문">
+                    <div class="card-title">오르세 미술관</div>
                     <div class="card-overlay">
                         <div class="card-description">
                             샹젤리제 거리의 중심! 개선문 꼭대기에서 본 파리의 
@@ -317,8 +357,8 @@
                 </article>
 
                 <article class="card">
-                    <img src="img/paris-sacre.jpg" alt="몽마르트 언덕의 사크레쾨르 대성당">
-                    <div class="card-title">사크레쾨르 대성당</div>
+                    <img src="img/paris-bers1.JPEG" alt="몽마르트 언덕의 사크레쾨르 대성당">
+                    <div class="card-title">베르사유 궁전</div>
                     <div class="card-overlay">
                         <div class="card-description">
                             몽마르트 언덕 위의 하얀 성당! 계단을 올라가며 본 파리의 
@@ -332,11 +372,11 @@
 
         <!-- 맛집 섹션 -->
         <section class="section" aria-labelledby="paris-food-title">
-            <h3 id="paris-food-title" class="section-title">🍽️ 맛집 탐방</h3>
+            <h3 id="paris-food-title" class="section-title">🍽️ 파리에서의 맛집 탐방</h3>
             <div class="cards-container">
                 <article class="card">
-                    <img src="img/paris-croissant.jpg" alt="갓 구운 프랑스 크루아상">
-                    <div class="card-title">프랑스 베이커리</div>
+                    <img src="img/paris-kuskus.JPEG" alt="갓 구운 프랑스 크루아상">
+                    <div class="card-title">쿠스쿠스</div>
                     <div class="card-overlay">
                         <div class="card-description">
                             갓 구운 크루아상의 바삭함이란! 버터 향이 가득한 빵과 
@@ -347,8 +387,8 @@
                 </article>
 
                 <article class="card">
-                    <img src="img/paris-french.jpg" alt="정통 프렌치 코스 요리">
-                    <div class="card-title">프렌치 비스트로</div>
+                    <img src="img/paris-kebap.JPEG" alt="정통 프렌치 코스 요리">
+                    <div class="card-title">케밥</div>
                     <div class="card-overlay">
                         <div class="card-description">
                             정통 프렌치 요리! 에스카르고와 코코뱅을 맛봤어요. 
@@ -359,8 +399,8 @@
                 </article>
 
                 <article class="card">
-                    <img src="img/paris-macaron.jpg" alt="알록달록한 프랑스 마카롱">
-                    <div class="card-title">마카롱 전문점</div>
+                    <img src="img/paris-seabass.JPEG" alt="농어">
+                    <div class="card-title">농어</div>
                     <div class="card-overlay">
                         <div class="card-description">
                             라뒤레의 마카롱! 다양한 색깔과 맛의 마카롱들이 
@@ -371,8 +411,8 @@
                 </article>
 
                 <article class="card">
-                    <img src="img/paris-crepe.jpg" alt="달콤한 프랑스 크레페">
-                    <div class="card-title">크레페 가게</div>
+                    <img src="img/paris-stake.jpg" alt="양고기 스테이크">
+                    <div class="card-title">스테이크</div>
                     <div class="card-overlay">
                         <div class="card-description">
                             몽마르트의 크레페! 누텔라와 바나나를 넣은 달콤한 크레페를 
@@ -386,11 +426,11 @@
 
         <!-- 특별한 순간들 섹션 -->
         <section class="section" aria-labelledby="paris-moments-title">
-            <h3 id="paris-moments-title" class="section-title">✨ 특별한 순간들</h3>
+            <h3 id="paris-moments-title" class="section-title">✨ 특별한 방문 벨기에 브뤼셀 당일치기</h3>
             <div class="cards-container">
                 <article class="card">
-                    <img src="img/paris-seine.jpg" alt="센강을 따라 흐르는 유람선">
-                    <div class="card-title">센강 유람선</div>
+                    <img src="img/brussel-statue.jpg" alt="센강을 따라 흐르는 유람선">
+                    <div class="card-title">오줌싸게 동상</div>
                     <div class="card-overlay">
                         <div class="card-description">
                             센강을 따라 크루즈를 타고 파리의 명소들을 둘러봤어요. 
@@ -401,8 +441,8 @@
                 </article>
 
                 <article class="card">
-                    <img src="img/paris-montmartre.jpg" alt="몽마르트 언덕의 예술가 거리">
-                    <div class="card-title">몽마르트 언덕</div>
+                    <img src="img/brussel-palace.jpg" alt="몽마르트 언덕의 예술가 거리">
+                    <div class="card-title">브뤼셀 왕궁</div>
                     <div class="card-overlay">
                         <div class="card-description">
                             예술가들의 거리를 걸으며 초상화도 그렸어요. 
@@ -413,20 +453,21 @@
                 </article>
 
                 <article class="card">
-                    <img src="img/paris-champs.jpg" alt="샹젤리제 거리의 상점들">
-                    <div class="card-title">샹젤리제 거리</div>
+                    <img src="img/brussel-main.jpg" alt="샹젤리제 거리의 상점들">
+                    <div class="card-title">브뤼셀 중심 광장</div>
                     <div class="card-overlay">
                         <div class="card-description">
-                            세계에서 가장 아름다운 거리를 걸었어요. 명품 상점들과 
-                            카페들이 즐비한 파리의 중심을 만끽했습니다.
+                            이 건물은 원래 빵 시장으로 사용되었지만, 이후 왕의 관리 사무소로 바뀌었고 지금은 브뤼셀 시립 박물관으로 활용되고 있다. 
+                            고딕 양식의 화려한 외관과 섬세한 조각들이 인상적이며, 
+                            그랑플라스 전체가 유네스코 세계문화유산으로 지정된 만큼 관광객들에게 매우 인기 있는 장소이다.
                         </div>
                         <div class="card-date">2024년 9월 4일</div>
                     </div>
                 </article>
 
                 <article class="card">
-                    <img src="img/paris-versailles.jpg" alt="베르사유 궁전의 화려한 정원">
-                    <div class="card-title">베르사유 궁전</div>
+                    <img src="img/brussel-wapple.jpg" alt="베르사유 궁전의 화려한 정원">
+                    <div class="card-title">브뤼셀에서의 한끼</div>
                     <div class="card-overlay">
                         <div class="card-description">
                             프랑스 왕실의 화려함! 거울의 방과 광활한 정원이 
@@ -437,8 +478,8 @@
                 </article>
 
                 <article class="card">
-                    <img src="img/paris-night.jpg" alt="밤에 조명이 켜진 에펠탑">
-                    <div class="card-title">파리의 야경</div>
+                    <img src="img/brussel-chocolate.jpg" alt="밤에 조명이 켜진 에펠탑">
+                    <div class="card-title">벨기에산 초콜릿</div>
                     <div class="card-overlay">
                         <div class="card-description">
                             트로카데로에서 본 에펠탑의 야경. 매 시간 정각에 
@@ -450,9 +491,9 @@
             </div>
         </section>
 
-        <!-- U7: 여행 메모 작성 폼 -->
+
         <section class="section memo-section" aria-labelledby="paris-memo-title">
-            <h3 id="paris-memo-title" class="section-title">📝 파리 여행 메모 남기기</h3>
+            <h3 id="paris-memo-title" class="section-title">📝 파리,브뤼셀 여행 메모 남기기</h3>
             <form class="travel-memo-form" id="paris-memo-form" aria-label="파리 여행 메모 작성 폼">
                 <div class="form-group">
                     <label for="paris-name">이름 <span class="required">*</span></label>
@@ -463,6 +504,11 @@
                     <input type="email" id="paris-email" name="email" placeholder="example@email.com">
                 </div>
                 <div class="form-group">
+                    <label for="paris-password">비밀번호 <span class="required">*</span></label>
+                    <input type="password" id="paris-password" name="password" required aria-required="true" placeholder="메모 삭제 시 필요합니다 (4자리 이상)" minlength="4">
+                    <small class="form-hint">💡 메모를 삭제할 때 필요하니 기억해주세요!</small>
+                </div>
+                <div class="form-group">
                     <label for="paris-memo">메모 내용 <span class="required">*</span></label>
                     <textarea id="paris-memo" name="memo" required aria-required="true" rows="5" placeholder="파리 여행에 대한 생각이나 추억을 남겨주세요..."></textarea>
                 </div>
@@ -470,6 +516,19 @@
             </form>
             <div id="paris-memo-success" class="success-message hidden" role="alert">
                 ✅ 메모가 성공적으로 저장되었습니다!
+            </div>
+            
+            <!-- 저장된 메모 목록 -->
+            <div class="saved-memos-container">
+                <div class="saved-memos-header">
+                    <h4 class="saved-memos-title">💾 저장된 메모</h4>
+                    <button class="download-btn" id="paris-download-btn" title="JSON 파일로 다운로드">
+                        <span class="download-icon">⬇️</span> 다운로드
+                    </button>
+                </div>
+                <div id="paris-saved-memos" class="saved-memos-list">
+                    <!-- JavaScript로 동적 생성 -->
+                </div>
             </div>
         </section>
     </main>
