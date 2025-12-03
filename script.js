@@ -347,10 +347,11 @@ if (londonForm) {
         const name = formData.get('name');
         const email = formData.get('email');
         const memo = formData.get('memo');
+        const password = formData.get('password');
         
         // U7: 유효성 검사
-        if (!name || !memo) {
-            alert('⚠️ 이름과 메모 내용은 필수 입력 항목입니다!');
+        if (!name || !memo || !password) {
+            alert('⚠️ 이름, 비밀번호, 메모 내용은 필수 입력 항목입니다!');
             return;
         }
 
@@ -372,7 +373,8 @@ if (londonForm) {
             email: email,
             memo: memo,
             destination: 'london',
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
+            passwordHash: hashPassword(password)
         };
         
         saveMemo('london', memoData);
@@ -405,10 +407,11 @@ if (parisForm) {
         const name = formData.get('name');
         const email = formData.get('email');
         const memo = formData.get('memo');
+        const password = formData.get('password');
         
         // U7: 유효성 검사
-        if (!name || !memo) {
-            alert('⚠️ 이름과 메모 내용은 필수 입력 항목입니다!');
+        if (!name || !memo || !password) {
+            alert('⚠️ 이름, 비밀번호, 메모 내용은 필수 입력 항목입니다!');
             return;
         }
         
@@ -429,7 +432,8 @@ if (parisForm) {
             email: email,
             memo: memo,
             destination: 'paris',
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
+            passwordHash: hashPassword(password)
         };
         
         saveMemo('paris', memoData);
@@ -569,11 +573,19 @@ function downloadMemosAsJSON(destination) {
 }
 
 
-function deleteMemo(destination, index) {
-    if (!confirm('정말로 이 메모를 삭제하시겠습니까?')) {
-        return;
+// 비밀번호 해시 함수 (간단한 해시)
+function hashPassword(password) {
+    let hash = 0;
+    for (let i = 0; i < password.length; i++) {
+        const char = password.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash;
     }
-    
+    return hash.toString();
+}
+
+// 메모 삭제 함수 (비밀번호 확인 포함)
+function deleteMemo(destination, index) {
     try {
         // localStorage에서 메모 불러오기
         const memos = JSON.parse(localStorage.getItem(`${destination}-memos`) || '[]');
@@ -583,21 +595,129 @@ function deleteMemo(destination, index) {
         const memoToDelete = sortedMemos[index];
         const actualIndex = memos.findIndex(m => m.timestamp === memoToDelete.timestamp);
         
-        // 메모 삭제
-        memos.splice(actualIndex, 1);
-        
-        // localStorage 업데이트
-        localStorage.setItem(`${destination}-memos`, JSON.stringify(memos));
-        
-        // 화면 업데이트
-        displaySavedMemos(destination);
-        
-        console.log(`✅ ${destination} 메모가 삭제되었습니다.`);
+        // 비밀번호 입력 모달 생성
+        showPasswordModal(destination, actualIndex, memoToDelete.passwordHash);
         
     } catch (error) {
         console.error('메모 삭제 중 오류:', error);
         alert('❌ 메모 삭제 중 오류가 발생했습니다.');
     }
+}
+
+// 비밀번호 입력 모달 표시
+function showPasswordModal(destination, actualIndex, correctPasswordHash) {
+    // 모달 HTML 생성
+    const modal = document.createElement('div');
+    modal.className = 'password-modal';
+    modal.innerHTML = `
+        <div class="password-modal-content">
+            <h3>🔒 비밀번호 확인</h3>
+            <p style="color: #aaa; text-align: center; margin-bottom: 15px;">
+                메모 작성 시 입력한 비밀번호를 입력해주세요
+            </p>
+            <input type="password" class="password-modal-input" placeholder="비밀번호 입력" id="delete-password-input" autofocus>
+            <div class="password-error" id="password-error" style="display: none;">
+                ❌ 비밀번호가 일치하지 않습니다
+            </div>
+            <div class="password-modal-buttons">
+                <button class="password-modal-btn cancel">취소</button>
+                <button class="password-modal-btn confirm">삭제</button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    const input = modal.querySelector('#delete-password-input');
+    const errorMsg = modal.querySelector('#password-error');
+    const cancelBtn = modal.querySelector('.cancel');
+    const confirmBtn = modal.querySelector('.confirm');
+    
+    // 취소 버튼
+    cancelBtn.addEventListener('click', () => {
+        document.body.removeChild(modal);
+    });
+    
+    // 모달 외부 클릭 시 닫기
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            document.body.removeChild(modal);
+        }
+    });
+    
+    // 확인 버튼
+    const handleConfirm = () => {
+        const enteredPassword = input.value;
+        const enteredPasswordHash = hashPassword(enteredPassword);
+        
+        if (enteredPasswordHash === correctPasswordHash) {
+            // 비밀번호 일치 - 메모 삭제
+            try {
+                const memos = JSON.parse(localStorage.getItem(`${destination}-memos`) || '[]');
+                memos.splice(actualIndex, 1);
+                localStorage.setItem(`${destination}-memos`, JSON.stringify(memos));
+                displaySavedMemos(destination);
+                document.body.removeChild(modal);
+                
+                // 삭제 성공 메시지
+                const successToast = document.createElement('div');
+                successToast.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: linear-gradient(135deg, #28a745 0%, #20833a 100%);
+                    color: white;
+                    padding: 15px 25px;
+                    border-radius: 8px;
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+                    z-index: 2000;
+                    animation: slideInRight 0.3s ease;
+                `;
+                successToast.textContent = '✅ 메모가 삭제되었습니다';
+                document.body.appendChild(successToast);
+                
+                setTimeout(() => {
+                    successToast.style.animation = 'fadeOut 0.3s ease';
+                    setTimeout(() => document.body.removeChild(successToast), 300);
+                }, 2000);
+                
+                console.log(`✅ ${destination} 메모가 삭제되었습니다.`);
+            } catch (error) {
+                console.error('메모 삭제 중 오류:', error);
+                alert('❌ 메모 삭제 중 오류가 발생했습니다.');
+            }
+        } else {
+            // 비밀번호 불일치
+            errorMsg.style.display = 'block';
+            input.value = '';
+            input.focus();
+            input.style.borderColor = '#e50914';
+            
+            setTimeout(() => {
+                input.style.borderColor = '#444';
+            }, 1000);
+        }
+    };
+    
+    confirmBtn.addEventListener('click', handleConfirm);
+    
+    // Enter 키로 확인
+    input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            handleConfirm();
+        }
+    });
+    
+    // ESC 키로 취소
+    document.addEventListener('keydown', function escHandler(e) {
+        if (e.key === 'Escape' && document.body.contains(modal)) {
+            document.body.removeChild(modal);
+            document.removeEventListener('keydown', escHandler);
+        }
+    });
+    
+    // 입력 필드에 포커스
+    setTimeout(() => input.focus(), 100);
 }
 
 // 다운로드 버튼 이벤트 리스너 설정
